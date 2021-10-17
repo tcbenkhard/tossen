@@ -1,0 +1,8 @@
+{
+  "Template": {
+    "TemplateName": "MyTemplate",
+    "SubjectPart": "Greetings, {{name}}!",
+    "HtmlPart": "<h2>Hoi!</h2><p>Dit bericht bevestigd de creatie van het toernooi {{name}}!</p><p>Deel onderstaande link om mensen uit te nodigen:<br />[link]</p><p>Klik op onderstaande link om je toernooi te beheren:<br />[link]</p><p>Veel tennisplezier!</p>",
+    "TextPart": "Hoi!\r\nDit bericht bevestigd de creatie van het toernooi {{name}}!\r\n\r\nDeel onderstaande link om mensen uit te nodigen:\r\n[link]\r\n\r\nOf klik op onderstaande link om je toernooi te beheren:\r\n[link]\r\n\r\n Veel tennisplezier!"
+  }
+}
