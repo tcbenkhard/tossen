@@ -1,30 +1,26 @@
-import {Tournament, TournamentRequest, TournamentRequestSchema} from "./model/Tournament";
 import {ProxyHandler} from "./util/ProxyHandler";
 import {APIGatewayProxyEvent, APIGatewayProxyResult} from "aws-lambda";
-import {TournamentRepository} from "./repository/TournamentRepository";
-import { v4 as uuidv4 } from 'uuid';
-import {SesClient} from "./client/SesClient";
 import {Response} from "./util/Response";
+import {MailService} from "./service/MailService";
+import {TournamentService} from "./service/TournamentService";
+import {CreateTournamentRequest, CreateTournamentRequestSchema} from "./model/CreateTournamentRequest";
 
-class CreateTournamentHandler extends ProxyHandler<TournamentRequest> {
-    private repository = new TournamentRepository();
-    private mailClient = new SesClient();
+class CreateTournamentHandler extends ProxyHandler<CreateTournamentRequest> {
+    private service = new TournamentService();
 
-    async handle(request: TournamentRequest): Promise<APIGatewayProxyResult> {
-        const tournament: Tournament = {
-            id: uuidv4(),
-            token: generateToken(),
-            ...request
-        }
-        await this.repository.save(tournament);
-        await this.mailClient.sendTournamentConfirmation(tournament);
+    async handle(request: CreateTournamentRequest): Promise<APIGatewayProxyResult> {
+        const tournament = await this.service.create(request);
 
-        return Response.OK(tournament);
+        return Response.created(tournament);
     }
 
-    parseRequest(event: APIGatewayProxyEvent): TournamentRequest {
-        const body = event.body;
-        return TournamentRequestSchema.parse(body);
+    parseRequest(event: APIGatewayProxyEvent): CreateTournamentRequest {
+        const body = JSON.parse(event.body!);
+        const request = {
+            ...body,
+            origin: event.headers.origin
+        }
+        return CreateTournamentRequestSchema.parse(request);
     }
 }
 

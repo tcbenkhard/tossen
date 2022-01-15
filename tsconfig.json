@@ -1,3 +1,4 @@
+
 {
   "compilerOptions": {
     "target": "ES2018",
@@ -21,7 +22,8 @@
     "strictPropertyInitialization": false,
     "typeRoots": [
       "./node_modules/@types"
-    ]
+    ],
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "node_modules",

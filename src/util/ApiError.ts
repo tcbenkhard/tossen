@@ -18,13 +18,23 @@ export abstract class ApiError implements APIGatewayProxyResult {
             statusCode,
             ...error
         });
+        this.headers = {
+            "Access-Control-Allow-Origin": "*"
+        }
     }
 }
 
 export class BadRequestError extends ApiError {
 
-    constructor(body: Error) {
-        super(400, body);
+    constructor(error: Error) {
+        super(400, error);
+    }
+}
+
+export class NotFoundError extends ApiError {
+
+    constructor(error: Error) {
+        super(404, error);
     }
 }
 
@@ -34,6 +44,14 @@ export class InternalServerError extends ApiError {
     }
 }
 
+export class ForbiddenServerError extends ApiError {
+    constructor(body: Error) {
+        super(403, body);
+    }
+}
+
 export class Errors {
     public static unexpectedError = () => new InternalServerError({errorCode: 'UNEXPECTED_ERROR', message: 'An unexpected error occured.'});
+    public static forbiddenError = (message: string) => new ForbiddenServerError({errorCode: 'FORBIDDEN', message});
+    public static missingBodyError = () => new BadRequestError({message: 'A valid requestbody is missing.', errorCode: 'INVALID_BODY'});
 }

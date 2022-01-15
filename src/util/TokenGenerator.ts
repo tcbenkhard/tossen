@@ -1,4 +1,4 @@
-const generateToken = () => {
+export const generateToken = () => {
     const validChars = 'abcdefghijklmnopqrstuvwxyz0123456789';
     let token = '';
     for(let i = 0; i < 6; i++) {
